@@ -12,6 +12,7 @@ repo-cassette-test/
 │  ├─ github-action/
 │  │  ├─ action.yml
 │  │  └─ main.js
+│  ├─ README.md
 │  └─ repo-cassette-log.yml
 │
 ├─ exploit/
