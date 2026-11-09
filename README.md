@@ -2,18 +2,20 @@
 
 Repo Cassette 문제에서 사용된 GitHub Actions Job 로그 흐름과 로그 Blob 교체 과정을 다시 실습하기 위한 참고 자료입니다.
 
-이 저장소의 파일은 기본적으로 참고용이며, `reference/` 아래의 YAML 파일은 GitHub Workflow로 자동 실행되지 않습니다. 본인 소유 저장소나 명시적으로 허가받은 환경에서만 사용해야 합니다.
+이 저장소는 GitHub Actions Workflow와 로그 교체 스크립트를 포함합니다. 본인 소유 저장소나 명시적으로 허가받은 환경에서만 사용해야 합니다.
 
 ## 파일 구조
 
 ```text
 repo-cassette-test/
-├─ reference/
-│  ├─ github-action/
-│  │  ├─ action.yml
-│  │  └─ main.js
-│  ├─ README.md
-│  └─ repo-cassette-log.yml
+├─ .github/
+│  ├─ actions/
+│  │  └─ get-log-url/
+│  │     ├─ action.yml
+│  │     └─ main.js
+│  ├─ workflows/
+│  │  └─ repo-cassette-log.yml
+│  └─ README.md
 │
 ├─ exploit/
 │  ├─ inject_job_log.py
@@ -23,15 +25,15 @@ repo-cassette-test/
 └─ README.md
 ```
 
-### `reference/github-action/`
+### `.github/actions/get-log-url/`
 
-GitHub-hosted Runner에서 제공되는 `ACTIONS_RUNTIME_TOKEN`과 `ACTIONS_RESULTS_URL`을 사용하여 현재 Job 로그 Blob의 임시 서명 URL을 요청하는 custom JavaScript Action 참고 코드입니다.
+GitHub-hosted Runner에서 제공되는 `ACTIONS_RUNTIME_TOKEN`과 `ACTIONS_RESULTS_URL`을 사용하여 현재 Job 로그 Blob의 임시 서명 URL을 요청하는 custom JavaScript Action입니다.
 
 서명 URL은 Workflow 로그에 출력하지 않고 `signed-url.txt`에 저장합니다.
 
-### `reference/repo-cassette-log.yml`
+### `.github/workflows/repo-cassette-log.yml`
 
-custom Action을 호출하고 `signed-url.txt`를 Artifact로 업로드하는 Workflow 참고 파일입니다. `reference/`에 있으므로 현재 위치에서는 실행되지 않습니다.
+custom Action을 호출하고 `signed-url.txt`를 Artifact로 업로드하는 Workflow 파일입니다.
 
 ### `exploit/inject_job_log.py`
 
@@ -41,22 +43,9 @@ Artifact에서 내려받은 `signed-url.txt`와 Job ID를 사용하여 공격 pa
 
 실제 payload의 한 줄 JSON 구조를 보여주는 예시입니다. `OWNER`, `REPO`, `JOB_ID`는 실행할 때 실제 값으로 교체됩니다.
 
-## Workflow 실습 준비
+## Workflow 실행
 
-참고 파일을 실제 GitHub Actions 경로로 복사합니다.
-
-```text
-reference/github-action/action.yml
-→ .github/actions/get-log-url/action.yml
-
-reference/github-action/main.js
-→ .github/actions/get-log-url/main.js
-
-reference/repo-cassette-log.yml
-→ .github/workflows/repo-cassette-log.yml
-```
-
-커밋한 뒤 Actions 탭에서 `Repo Cassette Log Lab`을 수동 실행합니다. 실행이 완료되면 Summary 페이지의 Artifacts 영역에서 다음 파일을 내려받습니다.
+Actions 탭에서 `Repo Cassette Log Lab`을 수동 실행합니다. 실행이 완료되면 Summary 페이지의 Artifacts 영역에서 다음 파일을 내려받습니다.
 
 ```text
 signed-job-log-url-RUN_ID.zip

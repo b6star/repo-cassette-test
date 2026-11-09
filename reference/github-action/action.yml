@@ -1,5 +1,0 @@
-name: Get signed job log URL
-description: Save the current job log signed URL without printing it
-runs:
-  using: node20
-  main: main.js
