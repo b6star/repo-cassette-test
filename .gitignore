@@ -1,0 +1,7 @@
+signed-url.txt
+payload.json
+downloaded.json
+signed-job-log-url-*/
+signed-job-log-url-*.zip
+__pycache__/
+*.pyc

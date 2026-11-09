@@ -1,4 +1,4 @@
-name: Repo Cassette Log Lab2
+name: Repo Cassette Log Lab
 
 on:
   workflow_dispatch:
